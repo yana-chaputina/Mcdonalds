@@ -67,6 +67,7 @@
                         <configuration>
                             <includes>
                                 <include>**/*Service.class</include>
+                                <include>**/*Repository.class</include>
                             </includes>
                         </configuration>
                     </execution>
@@ -134,6 +135,13 @@
             <version>5.5.2</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>3.1.0</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
 </project>

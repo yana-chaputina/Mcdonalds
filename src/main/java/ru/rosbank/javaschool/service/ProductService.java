@@ -7,17 +7,17 @@ import ru.rosbank.javaschool.domain.order.Order;
 import ru.rosbank.javaschool.domain.order.Sale;
 import ru.rosbank.javaschool.exception.DataNotFoundException;
 import ru.rosbank.javaschool.exception.InvalidDataException;
-import ru.rosbank.javaschool.repository.OrderRepository;
-import ru.rosbank.javaschool.repository.ProductRepository;
+import ru.rosbank.javaschool.repository.OrderRepositoryInterface;
+import ru.rosbank.javaschool.repository.ProductRepositoryInterface;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class ProductService implements ProductServiceInterface {
-    private final ProductRepository productRepository;
-    private final OrderRepository orderRepository;
+    private final ProductRepositoryInterface productRepository;
+    private final OrderRepositoryInterface orderRepository;
 
-    public ProductService(ProductRepository productRepository, OrderRepository orderRepository) {
+    public ProductService(ProductRepositoryInterface productRepository, OrderRepositoryInterface orderRepository) {
         this.productRepository = productRepository;
         this.orderRepository = orderRepository;
     }
@@ -130,7 +130,7 @@ public class ProductService implements ProductServiceInterface {
     }
 
     @Override
-    public Collection<ProductValue> getMostPopularProduct() {
+    public Collection<ProductValue> getThreeMostPopularProducts() {
         List<ProductValue> result = new ArrayList<ProductValue>();
         for (Order order : orderRepository.getAll()) {
             for (Sale sale : order.getSales()) {
@@ -146,7 +146,6 @@ public class ProductService implements ProductServiceInterface {
                 if (!productIsExist) {
                     result.add(new ProductValue(sale.getProductId(), sale.getCount()));
                 }
-
             }
         }
         return getThreeElementsWithMaxValue(result);
@@ -158,7 +157,7 @@ public class ProductService implements ProductServiceInterface {
     }
 
     @Override
-    public Collection<ProductValue> getMostProfitableProduct() {
+    public Collection<ProductValue> getThreeMostProfitableProduct() {
         List<ProductValue> result = new ArrayList<ProductValue>();
         for (Order order : orderRepository.getAll()) {
             for (Sale sale : order.getSales()) {

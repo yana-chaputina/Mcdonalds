@@ -1,19 +1,57 @@
 package ru.rosbank.javaschool.repository;
 
-
 import ru.rosbank.javaschool.domain.order.Order;
+import ru.rosbank.javaschool.exception.DataSaveException;
 
-import java.util.Collection;
-import java.util.Optional;
+import java.util.*;
 
-public interface OrderRepository {
-    Order create(Order order);
+public class OrderRepository implements OrderRepositoryInterface {
 
-    Collection<Order> getAll();
+    private final Collection<Order> orders;
+    private int nextId;
 
-    Optional<Order> getById(int id);
+    public OrderRepository(Collection<Order> orders) {
+        this.orders = orders;
+        nextId = orders.size() + 1;
+    }
 
-    Order update(Order newOrder);
+    public OrderRepository() {
+        this(new LinkedList<>());
+    }
 
-    boolean removeById(int id);
+    @Override
+    public Order create(Order order) {
+        order.setId(nextId++);
+        orders.add(order);
+        return order;
+    }
+
+    @Override
+    public Collection<Order> getAll() {
+        return Collections.unmodifiableCollection(orders);
+    }
+
+    @Override
+    public Optional<Order> getById(int id) {
+        return orders.stream()
+                .filter(o -> o.getId() == id)
+                .findFirst()
+                ;
+    }
+
+    @Override
+    public Order update(Order newOrder) {
+        for (Order order : orders) {
+            if (order.getId() == newOrder.getId()) {
+                order = Order.copy(newOrder);
+                return order;
+            }
+        }
+        throw new DataSaveException("Item with id = " + newOrder.getId() + " not found.");
+    }
+
+    @Override
+    public boolean removeById(int id) {
+        return orders.removeIf(o -> o.getId() == id);
+    }
 }

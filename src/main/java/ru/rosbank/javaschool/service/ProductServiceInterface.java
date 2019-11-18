@@ -28,9 +28,9 @@ public interface ProductServiceInterface {
 
     boolean removeProductById(int id);
 
-    Collection<ProductValue> getMostPopularProduct();
+    Collection<ProductValue> getThreeMostPopularProducts();
 
-    Collection<ProductValue> getMostProfitableProduct();
+    Collection<ProductValue> getThreeMostProfitableProduct();
 
     KeyValue getMostPopularPair();
 

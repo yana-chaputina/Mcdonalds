@@ -12,6 +12,9 @@ public class BurgerModel extends AbstractProductModel {
         super(id, name, price, kkal, description);
     }
 
+    public BurgerModel() {
+    }
+
     @Override
     public BurgerDetailsDto toDto() {
         return new BurgerDetailsDto(
